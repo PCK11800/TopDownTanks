@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="JSFML">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/JSFML" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$PROJECT_DIR$/JSFML/javadoc" />
+    </JAVADOC>
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/JSFML" recursive="false" />
+  </library>
+</component>
