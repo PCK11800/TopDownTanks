@@ -1,5 +1,6 @@
 package Main;
 
+import UI.UITest;
 import Window.Window;
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Clock;
@@ -11,6 +12,8 @@ public class Main {
     private Window window;
     private Clock frameClock = new Clock();
 
+    UITest test;
+
     private void createWindow(int width, int height, int frameRate, String name, int windowType)
     {
         window = new Window(width, height, frameRate, name, windowType);
@@ -20,6 +23,8 @@ public class Main {
     private void initialize()
     {
         createWindow(1000, 1000, 120,"TopDownTanks", Window.DEFAULT);
+
+        test = new UITest(window);
     }
 
     private void loop()
@@ -28,6 +33,7 @@ public class Main {
         {
             window.frameStart();
             //All update goes between frameStart and frameEnd
+            test.update();
             window.frameEnd();
         }
     }
