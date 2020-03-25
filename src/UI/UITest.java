@@ -15,6 +15,11 @@ public class UITest {
         panel.addOutline(Color.BLUE, 1);
 
         Button testButton = new Button(50, 50, 50, 50);
+        testButton.setPressed(new Runnable(){
+            public void run(){
+                System.out.println("Hello world!");
+            }
+        });
         testButton.addText("Test", -20, -10, 20, Fonts.MONTSERRAT, Color.WHITE);
         testButton.setOutline(Color.BLUE, 5);
         panel.add(testButton);

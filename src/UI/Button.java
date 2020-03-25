@@ -5,8 +5,11 @@ import Window.Window;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Text;
 import org.jsfml.graphics.Texture;
+import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.Mouse;
+
+import java.util.function.Predicate;
 
 public class Button extends RotatingObject
 {
@@ -17,6 +20,8 @@ public class Button extends RotatingObject
     private Color buttonColor = Color.GREEN; //Default color
     private Color outlineColor = Color.GREEN; //Default color
     private Text buttonText;
+    private Clock buttonPressClock = new Clock();
+    private Runnable buttonAction;
 
     public Button(float x, float y, float width, float height)
     {
@@ -52,6 +57,25 @@ public class Button extends RotatingObject
         }
     }
 
+    private void handleButtonPress(Window window)
+    {
+        if(buttonPressClock.getElapsedTime().asMilliseconds() >= 100)
+        {
+            Vector2i mousePos = Mouse.getPosition(window);
+            if(contains(mousePos.x, mousePos.y)) {
+                if (Mouse.isButtonPressed(Mouse.Button.LEFT)) {
+                    buttonAction.run();
+                    buttonPressClock.restart();
+                }
+            }
+        }
+    }
+
+    public void setPressed(Runnable run)
+    {
+        buttonAction = run;
+    }
+
     public void addText(String text, float x, float y, int size, String font, Color color)
     {
         buttonText = new Text();
@@ -77,6 +101,7 @@ public class Button extends RotatingObject
     public void update(Window window)
     {
         handleHover(window);
+        handleButtonPress(window);
         draw(window);
         window.draw(buttonText);
     }
