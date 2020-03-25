@@ -227,5 +227,22 @@ public class RotatingObject extends RectangleShape {
         return linesArray;
     }
 
+    public boolean contains(float x, float y)
+    {
+        float topLeftCorner_x = getCornerCoordinates("topleft", "x");
+        float topLeftCorner_y = getCornerCoordinates("topleft", "y");
+        float bottomRightCorner_x = getCornerCoordinates("bottomright", "x");
+        float bottomRightCorner_y = getCornerCoordinates("bottomright", "y");
+
+        if(x >= topLeftCorner_x && x <= bottomRightCorner_x)
+        {
+            if(y <= bottomRightCorner_y && y >= topLeftCorner_y)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String getTexturePath() { return texture; }
 }

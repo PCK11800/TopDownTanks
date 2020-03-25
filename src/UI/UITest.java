@@ -1,19 +1,21 @@
 package UI;
 
 import Window.Window;
+import org.jsfml.graphics.Color;
 
 public class UITest {
 
-    Button redButton;
+    Panel panel;
 
     public UITest(Window window)
     {
-        redButton = new Button(window ,100, 100, 50, 50);
+        panel = new Panel(window);
+        panel.add(new Button(100,100, 50, 50));
     }
 
     public void update()
     {
-        redButton.update();
+        panel.update();
     }
 
 }
