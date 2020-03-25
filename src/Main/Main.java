@@ -17,7 +17,7 @@ public class Main {
     private void createWindow(int width, int height, int frameRate, String name, int windowType)
     {
         window = new Window(width, height, frameRate, name, windowType);
-        window.setBackgroundColor(Color.WHITE);
+        window.setBackgroundColor(Color.BLACK);
     }
 
     private void initialize()
