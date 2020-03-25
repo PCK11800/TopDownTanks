@@ -9,10 +9,14 @@ public class UITest {
 
     public UITest(Window window)
     {
-        Button testButton = new Button(100, 100, 50, 50);
-        testButton.addText("Test", 0, 0, 20, Fonts.MONTSERRAT, Color.WHITE);
-        testButton.setOutline(Color.BLUE, 5);
         panel = new Panel(window);
+        panel.setSize(400, 400);
+        panel.setLocation(100, 100);
+        panel.addOutline(Color.BLUE, 1);
+
+        Button testButton = new Button(50, 50, 50, 50);
+        testButton.addText("Test", -20, -10, 20, Fonts.MONTSERRAT, Color.WHITE);
+        testButton.setOutline(Color.BLUE, 5);
         panel.add(testButton);
     }
 

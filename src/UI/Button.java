@@ -11,7 +11,8 @@ import org.jsfml.window.Mouse;
 public class Button extends RotatingObject
 {
     private float xPos, yPos, width, height;
-    private float xScale, yScale;
+    private float textX, textY;
+    private float panelX, panelY;
     private Texture buttonTexture;
     private Color buttonColor = Color.GREEN; //Default color
     private Color outlineColor = Color.GREEN; //Default color
@@ -54,11 +55,23 @@ public class Button extends RotatingObject
     public void addText(String text, float x, float y, int size, String font, Color color)
     {
         buttonText = new Text();
-        buttonText.setPosition(xPos + x, yPos + y);
+        textX = x;
+        textY = y;
+        buttonText.setPosition(xPos + textX, yPos + textY);
         buttonText.setFont(new Fonts(font));
         buttonText.setCharacterSize(size);
         buttonText.setColor(color);
         buttonText.setString(text);
+    }
+
+    public void setPanelLocation(float x, float y)
+    {
+        panelX = x;
+        panelY = y;
+        xPos = xPos + x;
+        yPos = yPos + y;
+        setCenterLocation(xPos, yPos);
+        buttonText.setPosition(xPos + textX, yPos + textY);
     }
 
     public void update(Window window)
