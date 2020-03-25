@@ -43,7 +43,7 @@ public class Main {
         switch (OSChecker.getOS())
         {
             case LINUX:
-                File lib = new File("TopDownTanks/src/Main/" + System.mapLibraryName("fixXInitThreads"));
+                File lib = new File("src/Main/" + System.mapLibraryName("fixXInitThreads"));
                 System.load(lib.getAbsolutePath());
                 break;
         }

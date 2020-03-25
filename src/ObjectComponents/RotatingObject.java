@@ -46,8 +46,8 @@ public class RotatingObject extends RectangleShape {
      */
     private void centerObject()
     {
-        this.xCenter = getTextureWidth() / 2;
-        this.yCenter = getTextureHeight() / 2;
+        this.xCenter = getWidth() / 2;
+        this.yCenter = getHeight() / 2;
         setOrigin(xCenter, yCenter);
     }
 
@@ -91,6 +91,8 @@ public class RotatingObject extends RectangleShape {
     public void setSize(float width, float height)
     {
         Vector2f size = new Vector2f(width, height);
+        this.width = width;
+        this.height = height;
         setSize(size);
     }
 

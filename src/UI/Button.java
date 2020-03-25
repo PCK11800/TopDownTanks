@@ -4,6 +4,8 @@ import ObjectComponents.RotatingObject;
 import Window.Window;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.Texture;
+import org.jsfml.system.Vector2i;
+import org.jsfml.window.Mouse;
 
 public class Button extends RotatingObject {
 
@@ -12,6 +14,7 @@ public class Button extends RotatingObject {
     private float xPos, yPos, width, height;
     private float xScale, yScale;
     private Texture buttonTexture;
+    private Color defaultColor = Color.GREEN;
 
     public Button(Window window, float x, float y, float width, float height)
     {
@@ -21,8 +24,8 @@ public class Button extends RotatingObject {
         this.width = width;
         this.height = height;
         setSize(width, height);
-        setFillColor(Color.RED);
-        setLocation(x, y);
+        setCenterLocation(x, y);
+        setFillColor(Color.GREEN);
     }
 
     public boolean contains(float x, float y)
@@ -34,19 +37,29 @@ public class Button extends RotatingObject {
 
         if(x >= topLeftCorner_x && x <= bottomRightCorner_x)
         {
-            if(y >= bottomRightCorner_y && y <= topLeftCorner_y)
+            if(y <= bottomRightCorner_y && y >= topLeftCorner_y)
             {
                 return true;
             }
         }
-
         return false;
+    }
+
+    private void handleHover()
+    {
+        Vector2i mousePos = Mouse.getPosition(window);
+        System.out.println(mousePos.x + ", " + mousePos.y);
+        if(contains(mousePos.x, mousePos.y)) {
+            setFillColor(Color.RED);
+        }
+        else{
+            setFillColor(Color.GREEN);
+        }
     }
 
     public void update()
     {
+        handleHover();
         draw(this.window);
     }
-
-
 }
