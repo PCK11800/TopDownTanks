@@ -1,4 +1,4 @@
-package Window;
+package ObjectComponents;
 
 import java.awt.*;
 

@@ -4,7 +4,9 @@ import UI.UITest;
 import Window.Window;
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Clock;
+import org.jsfml.window.WindowStyle;
 
+import java.awt.*;
 import java.io.File;
 
 public class Main {
@@ -22,7 +24,8 @@ public class Main {
 
     private void initialize()
     {
-        createWindow(1000, 1000, 120,"TopDownTanks", Window.DEFAULT);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        createWindow((int)screenSize.getWidth(), (int)screenSize.getHeight(), 120,"TopDownTanks", WindowStyle.FULLSCREEN);
 
         test = new UITest(window);
     }
@@ -31,10 +34,13 @@ public class Main {
     {
         while(window.isOpen())
         {
-            window.frameStart();
-            //All update goes between frameStart and frameEnd
-            test.update();
-            window.frameEnd();
+            if(frameClock.getElapsedTime().asMilliseconds() >= 8.333333){
+                window.frameStart();
+                frameClock.restart();
+                //All update goes between frameStart and frameEnd
+                test.update();
+                window.frameEnd();
+            }
         }
     }
 

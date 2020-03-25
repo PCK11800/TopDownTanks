@@ -2,7 +2,6 @@ package ObjectComponents;
 
 import Window.Window;
 import org.jsfml.graphics.RectangleShape;
-import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
 
@@ -90,6 +89,10 @@ public class RotatingObject extends RectangleShape {
 
     public void setSize(float width, float height)
     {
+        float scale[] = ObjectSizeHandler.scaleConstant();
+        width = width * scale[0];
+        height = height * scale[0];
+
         Vector2f size = new Vector2f(width, height);
         this.width = width;
         this.height = height;
