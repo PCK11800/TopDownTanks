@@ -1,5 +1,8 @@
-package UI;
+package UI.Screens;
 
+import UI.Components.Button;
+import UI.Components.Fonts;
+import UI.Components.Panel;
 import Window.Window;
 import org.jsfml.graphics.Color;
 
@@ -29,7 +32,8 @@ public class UITest {
         panel.addOutline(Color.BLUE, 1);
 
         Button testButton = new Button(50, 50, 50, 50);
-        testButton.setPressed(() -> System.out.println("Hello world!"));
+        testButton.setPressed(() ->
+                window.close());
         testButton.addText("Test", -20, -10, 20, Fonts.MONTSERRAT, Color.WHITE);
         testButton.setOutline(Color.BLUE, 5);
         panel.add(testButton);

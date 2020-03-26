@@ -1,6 +1,6 @@
 package Main;
 
-import UI.UITest;
+import UI.Screens.UITest;
 import Window.Window;
 import org.jsfml.graphics.Color;
 import org.jsfml.system.Clock;
@@ -25,7 +25,7 @@ public class Main {
     private void initialize()
     {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        createWindow((int)screenSize.getWidth(), (int)screenSize.getHeight(), 120,"TopDownTanks", WindowStyle.FULLSCREEN);
+        createWindow((int)screenSize.getWidth(), (int)screenSize.getHeight(), 120,"TopDownTanks", WindowStyle.DEFAULT);
 
         test = new UITest(window);
     }

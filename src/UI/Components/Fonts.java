@@ -1,4 +1,4 @@
-package UI;
+package UI.Components;
 
 import org.jsfml.graphics.Font;
 

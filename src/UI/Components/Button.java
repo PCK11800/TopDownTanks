@@ -1,4 +1,4 @@
-package UI;
+package UI.Components;
 
 import ObjectComponents.RotatingObject;
 import Window.Window;
@@ -8,8 +8,6 @@ import org.jsfml.graphics.Texture;
 import org.jsfml.system.Clock;
 import org.jsfml.system.Vector2i;
 import org.jsfml.window.Mouse;
-
-import java.util.function.Predicate;
 
 public class Button extends RotatingObject
 {
