@@ -23,36 +23,21 @@ public class Tank {
 
     public void setSize(float width, float height)
     {
-        width = width / 100;
-        height = height / 100;
-        hull.setSize(width * 53, height * 75);
-        turret.setSize(width * 53, height * 75);
+        hull.setSize(width, (float)(width * 1.5));
+        turret.setSize(width, width);
     }
 
-    public void setTankColor(Color hullColor, Color turretColor)
+    public void setTankColor(Color hullColor, Color turretColor, boolean outline)
     {
         this.hullColor = hullColor;
         this.turretColor = turretColor;
         hull.setFillColor(hullColor);
         turret.setFillColor(turretColor);
-    }
-
-    public void setOutline()
-    {
-        hull.setOutlineColor(Color.WHITE);
-        turret.setOutlineColor(Color.WHITE);
-        hull.setOutlineThickness(1);
-        turret.setOutlineThickness(1);
-    }
-
-    public void setHullTexture(String texturePath)
-    {
-        hull.setObjectTexture(texturePath);
-    }
-
-    public void setTurretTexture(String texturePath)
-    {
-        turret.setObjectTexture(texturePath);
+        if(outline)
+        {
+            turret.setOutlineColor(Color.WHITE);
+            turret.setOutlineThickness(1);
+        }
     }
 
     public void setWindow(Window window)

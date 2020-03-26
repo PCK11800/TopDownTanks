@@ -29,6 +29,9 @@ public class RotatingObject extends RectangleShape {
             objectTexture.loadFromFile(imagePath);
             objectTexture.setSmooth(true);
             setTexture(objectTexture);
+
+            width = getTextureWidth();
+            height = getTextureHeight();
         }
         catch (IOException e)
         {
@@ -40,7 +43,7 @@ public class RotatingObject extends RectangleShape {
     /**
      * Moves the centroid to the center of the object.
      */
-    protected void centerObject()
+    private void centerObject()
     {
         this.xCenter = getWidth() / 2;
         this.yCenter = getHeight() / 2;

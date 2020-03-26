@@ -31,7 +31,7 @@ public class Turret extends RotatingObject {
             rotationAngle = rotationAngle + 360;
         }
 
-        rotateObject((float) rotationAngle - 90);
+        rotateObject((float) rotationAngle);
     }
 
     public void setHull(Hull hull)
