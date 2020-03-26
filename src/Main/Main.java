@@ -1,5 +1,7 @@
 package Main;
 
+import Objects.Tank;
+import UI.ScreenHandler;
 import UI.Screens.UITest;
 import Window.Window;
 import org.jsfml.graphics.Color;
@@ -14,7 +16,8 @@ public class Main {
     private Window window;
     private Clock frameClock = new Clock();
 
-    UITest test;
+    ScreenHandler test;
+    Tank tank;
 
     private void createWindow(int width, int height, int frameRate, String name, int windowType)
     {
@@ -27,7 +30,16 @@ public class Main {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         createWindow((int)screenSize.getWidth(), (int)screenSize.getHeight(), 120,"TopDownTanks", WindowStyle.DEFAULT);
 
-        test = new UITest(window);
+        test = new ScreenHandler(window);
+
+        tank = new Tank();
+        tank.setWindow(window);
+        tank.setSize(100, 100);
+        tank.setTankColor(Color.GREEN, Color.GREEN, true);
+        tank.setLocation(100, 100);
+        tank.setVelocity(4);
+        tank.setTurningDistance(2);
+        tank.setPlayerControlled();
     }
 
     private void loop()
@@ -39,6 +51,7 @@ public class Main {
                 frameClock.restart();
                 //All update goes between frameStart and frameEnd
                 test.update();
+                tank.update();
                 window.frameEnd();
             }
         }
