@@ -11,30 +11,41 @@ import org.jsfml.window.Mouse;
 
 public class Button extends RotatingObject
 {
-    private float xPos, yPos, width, height;
     private float textX, textY;
     private float panelX, panelY;
     private Texture buttonTexture;
     private Color buttonColor = Color.GREEN; //Default color
+    private Color buttonColorHover = Color.GREEN; //Default color
+    private Color buttonColorClicked = Color.GREEN; //Default color
     private Color outlineColor = Color.GREEN; //Default color
-    private Text buttonText;
+    private Text buttonText = new Text();
     private Clock buttonPressClock = new Clock();
     private Runnable buttonAction;
+    private boolean isVisible = false; //Default false
 
-    public Button(float x, float y, float width, float height)
+    public void setAllColor(Color color1, Color color2, Color color3)
     {
-        this.xPos = x;
-        this.yPos = y;
-        this.width = width;
-        this.height = height;
-        setSize(width, height);
-        setCenterLocation(x, y);
+        this.buttonColor = color1;
+        setFillColor(color1);
+
+        this.buttonColorHover = color2;
+        this.buttonColorClicked = color3;
     }
 
     public void setColor(Color color)
     {
         this.buttonColor = color;
         setFillColor(color);
+    }
+
+    public void setHoverColor(Color color)
+    {
+        this.buttonColorHover = color;
+    }
+
+    public void setClickedColor(Color color)
+    {
+        this.buttonColorClicked = color;
     }
 
     public void setOutline(Color color, int width)
@@ -48,7 +59,7 @@ public class Button extends RotatingObject
     {
         Vector2i mousePos = Mouse.getPosition(window);
         if(contains(mousePos.x, mousePos.y)) {
-            setFillColor(Color.RED);
+            setFillColor(buttonColorHover);
         }
         else{
             setFillColor(buttonColor);
@@ -62,7 +73,10 @@ public class Button extends RotatingObject
             Vector2i mousePos = Mouse.getPosition(window);
             if(contains(mousePos.x, mousePos.y)) {
                 if (Mouse.isButtonPressed(Mouse.Button.LEFT)) {
-                    buttonAction.run();
+                    if(buttonAction != null){
+                        buttonAction.run();
+                    }
+                    setFillColor(buttonColorClicked);
                     buttonPressClock.restart();
                 }
             }
@@ -76,7 +90,6 @@ public class Button extends RotatingObject
 
     public void addText(String text, float x, float y, int size, String font, Color color)
     {
-        buttonText = new Text();
         textX = x;
         textY = y;
         buttonText.setPosition(xPos + textX, yPos + textY);
@@ -92,15 +105,23 @@ public class Button extends RotatingObject
         panelY = y;
         xPos = xPos + x;
         yPos = yPos + y;
-        setCenterLocation(xPos, yPos);
-        buttonText.setPosition(xPos + textX, yPos + textY);
+        setLocation(xPos, yPos);
+        buttonText.setPosition((xPos - width/2) + textX, yPos + textY);
+    }
+
+    public void setVisible(boolean isVisible)
+    {
+        this.isVisible = isVisible;
     }
 
     public void update(Window window)
     {
-        handleHover(window);
-        handleButtonPress(window);
-        draw(window);
-        window.draw(buttonText);
+        if(isVisible)
+        {
+            handleHover(window);
+            handleButtonPress(window);
+            draw(window);
+            window.draw(buttonText);
+        }
     }
 }

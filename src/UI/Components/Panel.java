@@ -13,6 +13,7 @@ public class Panel {
     private float width, height;
     private ArrayList<Button> panelButtons = new ArrayList<>();
     private RotatingObject outline = new RotatingObject();
+    private boolean isVisible = false; //Default false
 
     public Panel(Window window)
     {
@@ -52,12 +53,19 @@ public class Panel {
         outline.setOutlineThickness(thickness);
     }
 
+    public void setVisible(boolean isVisible)
+    {
+        this.isVisible = isVisible;
+    }
+
     public void update()
     {
-        window.draw(outline);
-        for(Button button : panelButtons)
-        {
-            button.update(window);
+        if(isVisible){
+            window.draw(outline);
+            for(Button button : panelButtons)
+            {
+                button.update(window);
+            }
         }
     }
 }

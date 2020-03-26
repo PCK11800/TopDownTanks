@@ -3,45 +3,41 @@ package UI.Screens;
 import UI.Components.Button;
 import UI.Components.Fonts;
 import UI.Components.Panel;
+import UI.Components.Screen;
 import Window.Window;
 import org.jsfml.graphics.Color;
 
-public class UITest {
+public class UITest extends Screen {
 
     Panel panel;
-
-    /*
-        testButton.setPressed(new Runnable(){
-            public void run(){
-                System.out.println("Hello world!");
-            }
-        });
-
-        AND
-
-        testButton.setPressed(() -> System.out.println("Hello world!"));
-
-        are the same.
-     */
+    Button button;
 
     public UITest(Window window)
     {
+        super(window);
+        iniUITest();
+    }
+
+    private void iniUITest()
+    {
         panel = new Panel(window);
-        panel.setSize(400, 400);
-        panel.setLocation(100, 100);
+        panel.setVisible(true);
+        panel.setLocation(200, 100);
+        panel.setSize(100, 100);
         panel.addOutline(Color.BLUE, 1);
 
-        Button testButton = new Button(50, 50, 50, 50);
-        testButton.setPressed(() ->
+        button = new Button();
+        button.setVisible(true);
+        button.setSize(50, 50);
+        button.setLocation(10, 10);
+        button.setColor(Color.GREEN);
+        button.setHoverColor(Color.RED);
+        button.setClickedColor(Color.WHITE);
+        button.addText("Hello world", 0, 0, 10, Fonts.MONTSERRAT, Color.YELLOW);
+        button.setPressed(() ->
                 window.close());
-        testButton.addText("Test", -20, -10, 20, Fonts.MONTSERRAT, Color.WHITE);
-        testButton.setOutline(Color.BLUE, 5);
-        panel.add(testButton);
-    }
 
-    public void update()
-    {
-        panel.update();
+        panel.add(button);
+        add(panel);
     }
-
 }

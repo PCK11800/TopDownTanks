@@ -1,0 +1,8 @@
+testButton.setPressed(new Runnable(){
+    public void run(){
+        System.out.println("Hello world!");
+    }
+});
+EQUALS
+testButton.setPressed(() -> System.out.println("Hello world!"));
+
