@@ -1,7 +1,7 @@
 package UI;
 
 import UI.Components.Screen;
-import UI.Screens.GameManager;
+import UI.Screens.LevelContainer;
 import UI.Screens.PauseScreen;
 import Window.Window;
 import org.jsfml.system.Clock;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class ScreenHandler {
 
     private ArrayList<Screen> screenList = new ArrayList<>();
-    private GameManager gameManager = new GameManager();
+    private LevelContainer levelContainer = new LevelContainer();
     protected Window window;
     private Clock pauseClock = new Clock();
     private boolean inGame = true; //Set this to true - becuz no main menu yet
@@ -30,7 +30,7 @@ public class ScreenHandler {
     }
     private void iniGame(Window window)
     {
-        gameManager.initialize(window);
+        levelContainer.initialize(window);
     }
 
     private void handlePause()
@@ -58,7 +58,7 @@ public class ScreenHandler {
     {
         handlePause();
         if(inGame){
-            gameManager.update();
+            levelContainer.update();
         }
     }
 }

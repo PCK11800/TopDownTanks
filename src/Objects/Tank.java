@@ -1,18 +1,27 @@
 package Objects;
 
 import ObjectComponents.TankComponents.Hull;
+import ObjectComponents.TankComponents.Shell;
 import ObjectComponents.TankComponents.Turret;
-import Window.Window;
+import UI.Screens.LevelContainer;
 import org.jsfml.graphics.Color;
+import org.jsfml.system.Clock;
+import org.jsfml.window.Keyboard;
+import org.jsfml.window.Mouse;
 
 public class Tank {
 
-    protected Window window;
+    protected LevelContainer levelContainer;
     protected Hull hull;
     protected Turret turret;
+    private boolean isPlayerControlled = false; //Default false
 
     private float xPos, yPos;
-    private Color hullColor, turretColor;
+    private Color hullColor, turretColor, shellColor;
+
+    private String shellTexture;
+    private float shellSpeed, rateOfFire;
+    private Clock fireClock = new Clock();
 
     public Tank()
     {
@@ -55,11 +64,11 @@ public class Tank {
         turret.setObjectTexture(texturePath);
     }
 
-    public void setWindow(Window window)
+    public void setLevelContainer(LevelContainer levelContainer)
     {
-        this.window = window;
-        hull.setWindow(window);
-        turret.setWindow(window);
+        this.levelContainer = levelContainer;
+        hull.setWindow(levelContainer.getWindow());
+        turret.setWindow(levelContainer.getWindow());
     }
 
     public void setLocation(float x, float y)
@@ -68,6 +77,60 @@ public class Tank {
         yPos = y;
         hull.setLocation(x, y);
         turret.setTurretPosition();
+    }
+
+    public void setShellParameters(String shellTexture, float speed)
+    {
+        this.shellTexture = shellTexture;
+        shellSpeed = speed;
+    }
+
+    public void setRateOfFire(float rateOfFire)
+    {
+        this.rateOfFire = rateOfFire;
+    }
+
+    private Shell createShell()
+    {
+        Shell shell = new Shell(levelContainer.getWindow(), turret, shellSpeed);
+        shell.setObjectTexture(shellTexture);
+        shell.setSize(turret.getWidth()/10 , turret.getHeight()/5);
+        return shell;
+    }
+
+    public void shoot()
+    {
+        levelContainer.getActiveShells().add(createShell());
+    }
+
+    private void playerControl()
+    {
+        turret.setTurretDirection_MouseControlled();
+        if(Keyboard.isKeyPressed(Keyboard.Key.W))
+        {
+            hull.moveForward();
+        }
+        if(Keyboard.isKeyPressed(Keyboard.Key.A))
+        {
+            hull.turnLeft();
+        }
+        if(Keyboard.isKeyPressed(Keyboard.Key.S))
+        {
+            hull.moveBackward();
+        }
+        if(Keyboard.isKeyPressed(Keyboard.Key.D))
+        {
+            hull.turnRight();
+        }
+
+        if(fireClock.getElapsedTime().asMilliseconds() >= rateOfFire)
+        {
+            if(Mouse.isButtonPressed(Mouse.Button.LEFT))
+            {
+                shoot();
+                fireClock.restart();
+            }
+        }
     }
 
     public void setTurningDistance(float turningDistance)
@@ -82,13 +145,13 @@ public class Tank {
 
     public void setPlayerControlled()
     {
-        hull.setPlayerControlled();
+        isPlayerControlled = true;
     }
 
     public void update()
     {
+        if(isPlayerControlled) { playerControl(); }
         hull.update();
-        turret.setTurretDirection_MouseControlled();
         turret.update();
     }
 

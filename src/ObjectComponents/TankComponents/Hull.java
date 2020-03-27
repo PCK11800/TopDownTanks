@@ -9,7 +9,6 @@ public class Hull extends RotatingObject {
     protected Window window;
     private float velocity;
     private float turningDistance;
-    private boolean isPlayerControlled = false; //Default false
 
     public void moveForward()
     {
@@ -55,31 +54,6 @@ public class Hull extends RotatingObject {
         this.turningDistance = turningDistance;
     }
 
-    public void setPlayerControlled()
-    {
-        isPlayerControlled = true;
-    }
-
-    private void playerControl()
-    {
-        if(Keyboard.isKeyPressed(Keyboard.Key.W))
-        {
-            moveForward();
-        }
-        if(Keyboard.isKeyPressed(Keyboard.Key.A))
-        {
-            turnLeft();
-        }
-        if(Keyboard.isKeyPressed(Keyboard.Key.S))
-        {
-            moveBackward();
-        }
-        if(Keyboard.isKeyPressed(Keyboard.Key.D))
-        {
-            turnRight();
-        }
-    }
-
     public void setWindow(Window window)
     {
         this.window = window;
@@ -87,10 +61,6 @@ public class Hull extends RotatingObject {
 
     public void update()
     {
-        if(isPlayerControlled)
-        {
-            playerControl();
-        }
         draw(window);
     }
 

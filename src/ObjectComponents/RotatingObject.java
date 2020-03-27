@@ -238,4 +238,5 @@ public class RotatingObject extends RectangleShape {
     }
 
     public String getTexturePath() { return texture; }
+    public float getObjectDirection() { return objectDirection; }
 }

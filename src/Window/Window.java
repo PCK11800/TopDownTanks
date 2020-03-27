@@ -51,4 +51,10 @@ public class Window extends RenderWindow {
             }
         }
     }
+
+    public float[] getDimensions()
+    {
+        float[] dimensions = {screenWidth, screenHeight};
+        return dimensions;
+    }
 }
