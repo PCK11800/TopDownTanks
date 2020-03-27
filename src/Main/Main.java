@@ -1,5 +1,6 @@
 package Main;
 
+import ObjectComponents.Textures;
 import Objects.Tank;
 import UI.ScreenHandler;
 import UI.Screens.UITest;
@@ -34,9 +35,12 @@ public class Main {
 
         tank = new Tank();
         tank.setWindow(window);
-        tank.setSize(100, 100);
-        tank.setTankColor(Color.GREEN, Color.GREEN, true);
-        tank.setLocation(100, 100);
+        tank.setSize(80, 80);
+        //tank.setTankColor(Color.GREEN, Color.GREEN);
+        tank.setOutline();
+        tank.setHullTexture(Textures.hull_default);
+        tank.setTurretTexture(Textures.turret_default);
+        tank.setLocation(200, 100);
         tank.setVelocity(4);
         tank.setTurningDistance(2);
         tank.setPlayerControlled();
