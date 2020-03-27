@@ -1,8 +1,7 @@
 package UI.Screens;
 
 import ObjectComponents.TankComponents.Shell;
-import ObjectComponents.Textures;
-import Objects.Tank;
+import Objects.Player;
 import Window.Window;
 
 import java.util.ArrayList;
@@ -10,25 +9,14 @@ import java.util.ArrayList;
 public class LevelContainer {
 
     private Window window;
-    private Tank tank;
+    private Player player;
     private ArrayList<Shell> activeShells = new ArrayList<>();
 
     public void initialize(Window window)
     {
         this.window = window;
-        tank = new Tank();
-        tank.setLevelContainer(this);
-        tank.setSize(80, 80);
-        //tank.setTankColor(Color.GREEN, Color.GREEN);
-        tank.setOutline();
-        tank.setHullTexture(Textures.hull_default);
-        tank.setTurretTexture(Textures.turret_default);
-        tank.setLocation(200, 100);
-        tank.setVelocity(4);
-        tank.setTurningDistance(2);
-        tank.setPlayerControlled();
-        tank.setShellParameters(Textures.shell_default, 4);
-        tank.setRateOfFire(100);
+        player = new Player();
+        player.setLevelContainer(this);
     }
 
     public Window getWindow()
@@ -61,6 +49,6 @@ public class LevelContainer {
     public void update()
     {
         handleShells();
-        tank.update();
+        player.update();
     }
 }
