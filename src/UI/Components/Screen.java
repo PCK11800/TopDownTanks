@@ -8,14 +8,22 @@ public class Screen {
 
     protected Window window;
     protected ArrayList<Panel> panelList = new ArrayList<>();
+    protected String name;
 
-    public Screen(Window window){
+    public Screen(Window window, String name)
+    {
         this.window = window;
+        this.name = name;
     }
 
     public void add(Panel panel)
     {
         panelList.add(panel);
+    }
+
+    public String getName()
+    {
+        return name;
     }
 
     public void update()
