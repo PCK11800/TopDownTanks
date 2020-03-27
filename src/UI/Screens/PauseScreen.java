@@ -7,18 +7,18 @@ import UI.Components.Screen;
 import Window.Window;
 import org.jsfml.graphics.Color;
 
-public class UITest extends Screen {
+public class PauseScreen extends Screen {
 
     Panel panel;
     Button button;
 
-    public UITest(Window window)
+    public PauseScreen(Window window)
     {
-        super(window);
-        iniUITest();
+        super(window, "Pause");
+        inPauseScreen();
     }
 
-    private void iniUITest()
+    private void inPauseScreen()
     {
         panel = new Panel(window);
         panel.setVisible(true);
