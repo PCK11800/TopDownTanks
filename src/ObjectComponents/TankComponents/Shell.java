@@ -3,6 +3,7 @@ package ObjectComponents.TankComponents;
 import ObjectComponents.MapObject;
 import ObjectComponents.RotatingObject;
 import Window.Window;
+import org.jsfml.system.Vector2f;
 
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class Shell extends RotatingObject {
     private Turret connectedTurret;
     private float speed;
     private ArrayList<MapObject> mapObjects;
+    private boolean isActive = true;
 
     public Shell(Window window, Turret connectedTurret, float speed)
     {
@@ -40,25 +42,24 @@ public class Shell extends RotatingObject {
         setLocation(xPos, yPos);
     }
 
-    public boolean checkOutOfBounds()
+    public void checkOutOfBounds()
     {
         float[] windowSize = window.getDimensions();
         if(getxPos() > windowSize[0] || getxPos() < 0) {
-            return true;
+            isActive = false;
         }
         else if (getyPos() > windowSize[1] || getyPos() < 0) {
-            return true;
+            isActive = false;
         }
-        return false;
+        isActive = true;
     }
 
+    //WORK IN PROGRESS - AIM TO MAKE RICOCHET WORKS FOR ALL ANGLE
     public void handleMapObjects()
     {
-        for(int i = 0; i < mapObjects.size(); i++)
-        {
+        for(int i = 0; i < mapObjects.size(); i++) {
             Line2D shellBounds[] = getObjectBounds();
             Line2D top = shellBounds[0];
-            Line2D bottom = shellBounds[1];
             Line2D left = shellBounds[2];
             Line2D right = shellBounds[3];
 
@@ -69,50 +70,26 @@ public class Shell extends RotatingObject {
             Line2D map_left = objectBounds[2];
             Line2D map_right = objectBounds[3];
 
-            int collisionState = 0; //0 = no collision, 1 = top, 10 = bottom, 33 = left, 71 = right
+            float mapObjectDirection = mapObjects.get(i).getObjectDirection();
 
             if (top.intersectsLine(map_top) || right.intersectsLine(map_top) || left.intersectsLine(map_top)) {
-                collisionState = collisionState + 1;
+                rotateObject(180 - objectDirection + (mapObjectDirection * 2));
             }
             if (top.intersectsLine(map_bottom) || right.intersectsLine(map_bottom) || left.intersectsLine(map_bottom)) {
-                collisionState = collisionState + 10;
+                rotateObject(180 - objectDirection + (mapObjectDirection * 2));
             }
             if (top.intersectsLine(map_left) || right.intersectsLine(map_left) || left.intersectsLine(map_left)) {
-                collisionState = collisionState + 33;
+                rotateObject(0 - objectDirection + (mapObjectDirection * 2));
             }
             if (top.intersectsLine(map_right) || right.intersectsLine(map_right) || left.intersectsLine(map_right)) {
-                collisionState = collisionState + 71;
-            }
-            if (bottom.intersectsLine(map_top) || bottom.intersectsLine(map_bottom) || bottom.intersectsLine(map_right) || bottom.intersectsLine(map_left)) {
-                collisionState = 0;
-            }
-
-            if (collisionState > 0) {
-
-                if (collisionState == 1 || collisionState == 10) {
-                    rotateObject(180 - objectDirection);
-                } else if (collisionState == 33 || collisionState == 71) {
-                    rotateObject(0 - objectDirection);
-                } else {
-                    //Top left & top right corner
-                    if (collisionState == 34 || collisionState == 72) {
-                        if (objectDirection < 270 && objectDirection > 90) {
-                            rotateObject(180 - objectDirection);
-                        } else {
-                            rotateObject(0 - objectDirection);
-                        }
-                    }
-                    //Bottom left & bottom right corner
-                    if (collisionState == 43 || collisionState == 81) {
-                        if (objectDirection >= 270 || objectDirection <= 90) {
-                            rotateObject(180 - objectDirection);
-                        } else {
-                            rotateObject(0 - objectDirection);
-                        }
-                    }
-                }
+                rotateObject(0 - objectDirection + (mapObjectDirection * 2));
             }
         }
+    }
+
+    public boolean isActive()
+    {
+        return isActive;
     }
 
     public void update()

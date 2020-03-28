@@ -24,7 +24,7 @@ public class LevelContainer {
 
     public void setMap()
     {
-        mapObjects.add(new MapObject(this, 200, 100, 50, 50));
+        mapObjects.add(new MapObject(this, 200, 200, 50, 50, 90));
     }
 
     public Window getWindow()
@@ -42,7 +42,7 @@ public class LevelContainer {
         for(int i = 0; i < activeShells.size(); i++)
         {
             Shell shell = activeShells.get(i);
-            if(shell.checkOutOfBounds())
+            if(!shell.isActive())
             {
                 activeShells.remove(shell);
                 activeShells.trimToSize();
