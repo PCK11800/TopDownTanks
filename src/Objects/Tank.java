@@ -95,6 +95,7 @@ public class Tank {
         Shell shell = new Shell(levelContainer.getWindow(), turret, shellSpeed);
         shell.setObjectTexture(shellTexture);
         shell.setSize(turret.getWidth()/10 , turret.getHeight()/5);
+        shell.setMapObjects(levelContainer.getMapObjects());
         return shell;
     }
 

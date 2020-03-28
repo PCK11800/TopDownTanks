@@ -12,7 +12,7 @@ public class Player {
         tank = new Tank();
         tank.setSize(80, 80);
         //tank.setTankColor(Color.GREEN, Color.GREEN);
-        tank.setOutline();
+        //tank.setOutline();
         tank.setHullTexture(Textures.hull_default);
         tank.setTurretTexture(Textures.turret_default);
         tank.setLocation(200, 100);

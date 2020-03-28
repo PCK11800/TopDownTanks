@@ -71,9 +71,9 @@ public class RotatingObject extends RectangleShape {
 
     public void setLocation(float xPos, float yPos)
     {
+        centerObject();
         this.xPos = xPos;
         this.yPos = yPos;
-        centerObject();
         setPosition(xPos, yPos);
     }
 
@@ -87,6 +87,7 @@ public class RotatingObject extends RectangleShape {
         this.width = width;
         this.height = height;
         setSize(size);
+        centerObject();
     }
 
     public void draw(Window w)
