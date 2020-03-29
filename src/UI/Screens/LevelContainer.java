@@ -24,7 +24,7 @@ public class LevelContainer {
 
     public void setMap()
     {
-        mapObjects.add(new MapObject(this, 200, 200, 50, 50, 90));
+        mapObjects.add(new MapObject(this, 200, 400, 200, 50, 45));
     }
 
     public Window getWindow()

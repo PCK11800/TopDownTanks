@@ -16,6 +16,7 @@ public class Shell extends RotatingObject {
     private float speed;
     private ArrayList<MapObject> mapObjects;
     private boolean isActive = true;
+    private MapObject lastCollidedMapObject = null;
 
     public Shell(Window window, Turret connectedTurret, float speed)
     {
@@ -71,18 +72,68 @@ public class Shell extends RotatingObject {
             Line2D map_right = objectBounds[3];
 
             float mapObjectDirection = mapObjects.get(i).getObjectDirection();
+            String collision = null;
 
             if (top.intersectsLine(map_top) || right.intersectsLine(map_top) || left.intersectsLine(map_top)) {
-                rotateObject(180 - objectDirection + (mapObjectDirection * 2));
+                if(lastCollidedMapObject == null)
+                {
+                    collision = "top";
+                    lastCollidedMapObject = mapObjects.get(i);
+                }
+                if(!lastCollidedMapObject.equals(mapObjects.get(i)))
+                {
+                    collision = "top";
+                    lastCollidedMapObject = mapObjects.get(i);
+                }
             }
             if (top.intersectsLine(map_bottom) || right.intersectsLine(map_bottom) || left.intersectsLine(map_bottom)) {
-                rotateObject(180 - objectDirection + (mapObjectDirection * 2));
+                if(lastCollidedMapObject == null)
+                {
+                    collision = "bottom";
+                    lastCollidedMapObject = mapObjects.get(i);
+                }
+                if(!lastCollidedMapObject.equals(mapObjects.get(i)))
+                {
+                    collision = "bottom";
+                    lastCollidedMapObject = mapObjects.get(i);
+                }
             }
             if (top.intersectsLine(map_left) || right.intersectsLine(map_left) || left.intersectsLine(map_left)) {
-                rotateObject(0 - objectDirection + (mapObjectDirection * 2));
+                if(lastCollidedMapObject == null)
+                {
+                    collision = "left";
+                    lastCollidedMapObject = mapObjects.get(i);
+                }
+                if(!lastCollidedMapObject.equals(mapObjects.get(i)))
+                {
+                    collision = "left";
+                    lastCollidedMapObject = mapObjects.get(i);
+                }
             }
             if (top.intersectsLine(map_right) || right.intersectsLine(map_right) || left.intersectsLine(map_right)) {
-                rotateObject(0 - objectDirection + (mapObjectDirection * 2));
+                if(lastCollidedMapObject == null)
+                {
+                    collision = "right";
+                    lastCollidedMapObject = mapObjects.get(i);
+                }
+                if(!lastCollidedMapObject.equals(mapObjects.get(i)))
+                {
+                    collision = "right";
+                    lastCollidedMapObject = mapObjects.get(i);
+                }
+            }
+
+            if(collision != null)
+            {
+                if(collision.equals("top") || collision.equals("bottom"))
+                {
+                    rotateObject(180 - objectDirection + (mapObjectDirection * 2));
+                }
+
+                if(collision.equals("left") || collision.equals("right"))
+                {
+                    rotateObject(0 - objectDirection + (mapObjectDirection * 2));
+                }
             }
         }
     }
@@ -97,5 +148,6 @@ public class Shell extends RotatingObject {
         draw(window);
         shotForward();
         handleMapObjects();
+        checkOutOfBounds();
     }
 }
