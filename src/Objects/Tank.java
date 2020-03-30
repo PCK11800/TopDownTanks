@@ -69,6 +69,7 @@ public class Tank {
         this.levelContainer = levelContainer;
         hull.setWindow(levelContainer.getWindow());
         turret.setWindow(levelContainer.getWindow());
+        hull.setMapObjects(levelContainer.getMapObjects());
     }
 
     public void setLocation(float x, float y)
@@ -107,22 +108,10 @@ public class Tank {
     private void playerControl()
     {
         turret.setTurretDirection_MouseControlled();
-        if(Keyboard.isKeyPressed(Keyboard.Key.W))
-        {
-            hull.moveForward();
-        }
-        if(Keyboard.isKeyPressed(Keyboard.Key.A))
-        {
-            hull.turnLeft();
-        }
-        if(Keyboard.isKeyPressed(Keyboard.Key.S))
-        {
-            hull.moveBackward();
-        }
-        if(Keyboard.isKeyPressed(Keyboard.Key.D))
-        {
-            hull.turnRight();
-        }
+        if(Keyboard.isKeyPressed(Keyboard.Key.W)) { hull.move("forward"); }
+        if(Keyboard.isKeyPressed(Keyboard.Key.A)) { hull.move("left"); }
+        if(Keyboard.isKeyPressed(Keyboard.Key.S)) { hull.move("backward"); }
+        if(Keyboard.isKeyPressed(Keyboard.Key.D)) { hull.move("right"); }
 
         if(fireClock.getElapsedTime().asMilliseconds() >= rateOfFire)
         {
