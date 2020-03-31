@@ -40,7 +40,7 @@ public class RotatingObject extends RectangleShape {
     /**
      * Moves the centroid to the center of the object.
      */
-    protected void centerObject()
+    public void centerObject()
     {
         this.xCenter = getWidth() / 2;
         this.yCenter = getHeight() / 2;
@@ -86,6 +86,14 @@ public class RotatingObject extends RectangleShape {
         Vector2f size = new Vector2f(width, height);
         this.width = width;
         this.height = height;
+        setSize(size);
+        centerObject();
+    }
+
+    public void setSizeVector(Vector2f size)
+    {
+        this.width = size.x;
+        this.height = size.y;
         setSize(size);
         centerObject();
     }

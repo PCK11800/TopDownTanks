@@ -17,7 +17,7 @@ public class Player {
         tank.setTurretTexture(Textures.turret_default);
         tank.setLocation(200, 100);
         tank.setVelocity(4);
-        tank.setTurningDistance(2);
+        tank.setTurningDistance(3);
         tank.setPlayerControlled();
         tank.setShellParameters(Textures.shell_default, 4);
         tank.setRateOfFire(100);

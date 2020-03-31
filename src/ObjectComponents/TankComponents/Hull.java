@@ -4,7 +4,6 @@ import ObjectComponents.MapObject;
 import ObjectComponents.RotatingObject;
 import Window.Window;
 import org.jsfml.graphics.Color;
-import org.jsfml.window.Keyboard;
 
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
@@ -15,6 +14,7 @@ public class Hull extends RotatingObject {
     private float velocity;
     private float turningDistance;
     private ArrayList<MapObject> mapObjects;
+    private RotatingObject ghost = new RotatingObject();
 
     private void moveForward()
     {
@@ -43,23 +43,19 @@ public class Hull extends RotatingObject {
     private boolean handleCollision(String move)
     {
         boolean canMove = true;
-
-        RotatingObject ghost = new RotatingObject();
-        ghost.setSize(width + 10, height + 10);
+        ghost.setSizeVector(this.getSize());
         ghost.setLocation(xPos, yPos);
         ghost.rotateObject(objectDirection);
-        ghost.setOutlineColor(Color.RED);
-        ghost.setOutlineThickness(5);
 
         if(move.equals("forward")){
             float ghostxPos = (float) (xPos + (velocity * Math.sin(Math.toRadians(objectDirection))));
             float ghostyPos = (float) (yPos - (velocity * Math.cos(Math.toRadians(objectDirection))));
-            ghost.setPosition(ghostxPos, ghostyPos);
+            ghost.setLocation(ghostxPos, ghostyPos);
         }
         if(move.equals("backward")){
-            float ghostxPos = (float) (xPos + (velocity * Math.sin(Math.toRadians(objectDirection))));
-            float ghostyPos = (float) (yPos - (velocity * Math.cos(Math.toRadians(objectDirection))));
-            ghost.setPosition(ghostxPos, ghostyPos);
+            float ghostxPos = (float) (xPos - (velocity * Math.sin(Math.toRadians(objectDirection))));
+            float ghostyPos = (float) (yPos + (velocity * Math.cos(Math.toRadians(objectDirection))));
+            ghost.setLocation(ghostxPos, ghostyPos);
         }
         if(move.equals("left")){
             ghost.rotateObject(objectDirection - turningDistance);
@@ -73,8 +69,6 @@ public class Hull extends RotatingObject {
         Line2D bottom = ghostBounds[1];
         Line2D left = ghostBounds[2];
         Line2D right = ghostBounds[3];
-
-        ghost.draw(window);
 
         for(int i = 0; i < mapObjects.size(); i++)
         {
