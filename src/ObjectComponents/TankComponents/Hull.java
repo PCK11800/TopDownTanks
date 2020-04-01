@@ -3,7 +3,6 @@ package ObjectComponents.TankComponents;
 import ObjectComponents.MapObject;
 import ObjectComponents.RotatingObject;
 import Window.Window;
-import org.jsfml.graphics.Color;
 
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
@@ -150,6 +149,11 @@ public class Hull extends RotatingObject {
     public void update()
     {
         draw(window);
+    }
+
+    public void updateMapObjectList(ArrayList<MapObject> mapObjects)
+    {
+        this.mapObjects = mapObjects;
     }
 
 }

@@ -2,6 +2,7 @@ package UI.Screens;
 
 import ObjectComponents.MapObject;
 import ObjectComponents.TankComponents.Shell;
+import Objects.MapGenerator;
 import Objects.Player;
 import Window.Window;
 
@@ -11,20 +12,19 @@ public class LevelContainer {
 
     private Window window;
     private Player player;
-    private ArrayList<MapObject> mapObjects = new ArrayList<>();
+    private ArrayList<MapObject> mapObjects;
     private ArrayList<Shell> activeShells = new ArrayList<>();
+    private MapGenerator mapGenerator = new MapGenerator();
 
     public void initialize(Window window)
     {
         this.window = window;
         player = new Player();
         player.setLevelContainer(this);
-        setMap();
-    }
 
-    public void setMap()
-    {
-        mapObjects.add(new MapObject(this, 200, 400, 200, 50, 45));
+        mapGenerator.settings(this);
+        mapGenerator.genMap();
+        mapObjects = mapGenerator.getMapObjects();
     }
 
     public Window getWindow()

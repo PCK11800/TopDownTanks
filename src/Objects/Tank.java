@@ -140,6 +140,7 @@ public class Tank {
 
     public void update()
     {
+        hull.updateMapObjectList(levelContainer.getMapObjects());
         if(isPlayerControlled) { playerControl(); }
         hull.update();
         turret.update();
