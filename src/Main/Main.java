@@ -25,7 +25,7 @@ public class Main {
     private void initialize()
     {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        createWindow((int)screenSize.getWidth(), (int)screenSize.getHeight(), 120,"TopDownTanks", WindowStyle.DEFAULT);
+        createWindow((int)screenSize.getWidth(), (int)screenSize.getHeight(), 120,"TopDownTanks", WindowStyle.FULLSCREEN);
 
         test = new ScreenHandler(window);
     }

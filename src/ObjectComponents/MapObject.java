@@ -15,6 +15,8 @@ public class MapObject extends RotatingObject{
         setLocation(x, y);
         setSize(width, height);
         setFillColor(Color.WHITE);
+        setOutlineColor(Color.RED);
+        setOutlineThickness(1);
         rotateObject(angle);
     }
 

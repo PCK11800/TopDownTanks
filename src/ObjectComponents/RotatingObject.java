@@ -246,6 +246,32 @@ public class RotatingObject extends RectangleShape {
         return false;
     }
 
+    public boolean intersect(RotatingObject object)
+    {
+        Line2D thisObject[] = getObjectBounds();
+        Line2D thisTop = thisObject[0];
+        Line2D thisBottom = thisObject[1];
+        Line2D thisLeft = thisObject[2];
+        Line2D thisRight = thisObject[3];
+
+        Line2D thatObject[] = object.getObjectBounds();
+        Line2D thatTop = thatObject[0];
+        Line2D thatBottom = thatObject[1];
+        Line2D thatLeft = thatObject[2];
+        Line2D thatRight = thatObject[3];
+
+        if (thisTop.intersectsLine(thatTop) || thisRight.intersectsLine(thatTop) || thisLeft.intersectsLine(thatTop) || thisBottom.intersectsLine(thatTop) ||
+                thisTop.intersectsLine(thatRight) || thisRight.intersectsLine(thatRight) || thisLeft.intersectsLine(thatRight) || thisBottom.intersectsLine(thatRight) ||
+                thisTop.intersectsLine(thatLeft) || thisRight.intersectsLine(thatLeft) || thisLeft.intersectsLine(thatLeft) || thisBottom.intersectsLine(thatLeft) ||
+                thisTop.intersectsLine(thatBottom) || thisRight.intersectsLine(thatBottom) || thisLeft.intersectsLine(thatBottom) || thisBottom.intersectsLine(thatBottom))
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     public String getTexturePath() { return texture; }
     public float getObjectDirection() { return objectDirection; }
 }

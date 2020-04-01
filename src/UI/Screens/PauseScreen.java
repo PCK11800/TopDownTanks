@@ -24,16 +24,15 @@ public class PauseScreen extends Screen {
         panel.setVisible(true);
         panel.setLocation(200, 100);
         panel.setSize(100, 100);
-        panel.addOutline(Color.BLUE, 1);
 
         button = new Button();
         button.setVisible(true);
-        button.setSize(50, 50);
+        button.setSize(200, 50);
         button.setLocation(10, 10);
-        button.setColor(Color.GREEN);
+        button.setColor(Color.WHITE);
         button.setHoverColor(Color.RED);
         button.setClickedColor(Color.WHITE);
-        button.addText("Hello world", 0, 0, 10, Fonts.MONTSERRAT, Color.YELLOW);
+        button.addText("EXIT GAME", 0, 0, 20, Fonts.MONTSERRAT, Color.BLACK);
         button.setPressed(() ->
                 window.close());
 

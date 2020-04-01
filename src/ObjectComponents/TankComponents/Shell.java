@@ -62,26 +62,11 @@ public class Shell extends RotatingObject {
     private void checkShellCollision()
     {
         shells = levelContainer.getActiveShells();
-        for(int i = 0; i < shells.size(); i++)
-        {
-            Line2D shellBounds[] = getObjectBounds();
-            Line2D top = shellBounds[0];
-            Line2D bottom = shellBounds[1];
-            Line2D left = shellBounds[2];
-            Line2D right = shellBounds[3];
-            
-            Line2D activeShellBounds[] = shells.get(i).getObjectBounds();
-            Line2D shell_top = activeShellBounds[0];
-            Line2D shell_bottom = activeShellBounds[1];
-            Line2D shell_left = activeShellBounds[2];
-            Line2D shell_right = activeShellBounds[3];
-
+        for(int i = 0; i < shells.size(); i++){
+            Shell activeShell = shells.get(i);
             if(!shells.get(i).equals(this))
             {
-                if (top.intersectsLine(shell_top) || right.intersectsLine(shell_top) || left.intersectsLine(shell_top) || bottom.intersectsLine(shell_top) ||
-                        top.intersectsLine(shell_bottom) || right.intersectsLine(shell_bottom) || left.intersectsLine(shell_bottom) || bottom.intersectsLine(shell_bottom) ||
-                        top.intersectsLine(shell_right) || right.intersectsLine(shell_right) || left.intersectsLine(shell_right) || bottom.intersectsLine(shell_right) ||
-                        top.intersectsLine(shell_left) || right.intersectsLine(shell_left) || left.intersectsLine(shell_left) || bottom.intersectsLine(shell_left))
+                if(this.intersect(activeShell))
                 {
                     isActive = false;
                 }
