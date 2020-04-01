@@ -120,7 +120,6 @@ public class Hull extends RotatingObject {
         this.mapObjects = mapObjects;
     }
 
-
     public float getVelocity()
     {
         return velocity;

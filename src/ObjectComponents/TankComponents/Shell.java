@@ -2,31 +2,30 @@ package ObjectComponents.TankComponents;
 
 import ObjectComponents.MapObject;
 import ObjectComponents.RotatingObject;
-import Window.Window;
-import org.jsfml.system.Vector2f;
+import UI.Screens.LevelContainer;
 
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
-import java.util.logging.Level;
+
 
 public class Shell extends RotatingObject {
 
-    protected Window window;
+    protected LevelContainer levelContainer;
     private Turret connectedTurret;
     private float speed;
     private ArrayList<MapObject> mapObjects;
     private boolean isActive = true;
     private MapObject lastCollidedMapObject = null;
 
-    public Shell(Window window, Turret connectedTurret, float speed)
+    public Shell(LevelContainer levelContainer, Turret connectedTurret, float speed)
     {
-        this.window = window;
+        this.levelContainer = levelContainer;
         this.connectedTurret = connectedTurret;
         this.speed = speed;
         setLocation(
                 //Adjustments needed so shells go out of the barrel instead - to prevent hitting oneself
-                connectedTurret.getxPos(),
-                connectedTurret.getyPos()
+                connectedTurret.getxPos() + (float)(connectedTurret.getWidth() * Math.sin(Math.toRadians(connectedTurret.getObjectDirection()))) ,
+                connectedTurret.getyPos() - (float)(connectedTurret.getWidth() * Math.cos(Math.toRadians(connectedTurret.getObjectDirection())))
         );
         rotateObject(connectedTurret.getObjectDirection());
     }
@@ -45,7 +44,7 @@ public class Shell extends RotatingObject {
 
     public void checkOutOfBounds()
     {
-        float[] windowSize = window.getDimensions();
+        float[] windowSize = levelContainer.getWindow().getDimensions();
         if(getxPos() > windowSize[0] || getxPos() < 0) {
             isActive = false;
         }
@@ -145,7 +144,8 @@ public class Shell extends RotatingObject {
 
     public void update()
     {
-        draw(window);
+        draw(levelContainer.getWindow());
+        mapObjects = levelContainer.getMapObjects();
         shotForward();
         handleMapObjects();
         checkOutOfBounds();
