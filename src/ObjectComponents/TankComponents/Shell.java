@@ -12,16 +12,18 @@ public class Shell extends RotatingObject {
 
     protected LevelContainer levelContainer;
     private Turret connectedTurret;
-    private float speed;
+    private float speed, ricochet;
     private ArrayList<MapObject> mapObjects;
+    private ArrayList<Shell> shells;
     private boolean isActive = true;
     private MapObject lastCollidedMapObject = null;
 
-    public Shell(LevelContainer levelContainer, Turret connectedTurret, float speed)
+    public Shell(LevelContainer levelContainer, Turret connectedTurret, float speed, float ricochet)
     {
         this.levelContainer = levelContainer;
         this.connectedTurret = connectedTurret;
         this.speed = speed;
+        this.ricochet = ricochet;
         setLocation(
                 //Adjustments needed so shells go out of the barrel instead - to prevent hitting oneself
                 connectedTurret.getxPos() + (float)(connectedTurret.getWidth() * Math.sin(Math.toRadians(connectedTurret.getObjectDirection()))) ,
@@ -30,19 +32,14 @@ public class Shell extends RotatingObject {
         rotateObject(connectedTurret.getObjectDirection());
     }
 
-    public void setMapObjects(ArrayList<MapObject> mapObjects)
-    {
-        this.mapObjects = mapObjects;
-    }
-
-    public void shotForward()
+    private void shotForward()
     {
         xPos = xPos + (float)(speed * Math.sin(Math.toRadians(this.objectDirection)));
         yPos = yPos - (float)(speed * Math.cos(Math.toRadians(this.objectDirection)));
         setLocation(xPos, yPos);
     }
 
-    public void checkOutOfBounds()
+    private void checkOutOfBounds()
     {
         float[] windowSize = levelContainer.getWindow().getDimensions();
         if(getxPos() > windowSize[0] || getxPos() < 0) {
@@ -54,8 +51,45 @@ public class Shell extends RotatingObject {
         isActive = true;
     }
 
-    //WORK IN PROGRESS - AIM TO MAKE RICOCHET WORKS FOR ALL ANGLE
-    public void handleMapObjects()
+    private void checkRicochet()
+    {
+        if(ricochet < 0)
+        {
+            isActive = false;
+        }
+    }
+
+    private void checkShellCollision()
+    {
+        shells = levelContainer.getActiveShells();
+        for(int i = 0; i < shells.size(); i++)
+        {
+            Line2D shellBounds[] = getObjectBounds();
+            Line2D top = shellBounds[0];
+            Line2D bottom = shellBounds[1];
+            Line2D left = shellBounds[2];
+            Line2D right = shellBounds[3];
+            
+            Line2D activeShellBounds[] = shells.get(i).getObjectBounds();
+            Line2D shell_top = activeShellBounds[0];
+            Line2D shell_bottom = activeShellBounds[1];
+            Line2D shell_left = activeShellBounds[2];
+            Line2D shell_right = activeShellBounds[3];
+
+            if(!shells.get(i).equals(this))
+            {
+                if (top.intersectsLine(shell_top) || right.intersectsLine(shell_top) || left.intersectsLine(shell_top) || bottom.intersectsLine(shell_top) ||
+                        top.intersectsLine(shell_bottom) || right.intersectsLine(shell_bottom) || left.intersectsLine(shell_bottom) || bottom.intersectsLine(shell_bottom) ||
+                        top.intersectsLine(shell_right) || right.intersectsLine(shell_right) || left.intersectsLine(shell_right) || bottom.intersectsLine(shell_right) ||
+                        top.intersectsLine(shell_left) || right.intersectsLine(shell_left) || left.intersectsLine(shell_left) || bottom.intersectsLine(shell_left))
+                {
+                    isActive = false;
+                }
+            }
+        }
+    }
+
+    private void handleMapObjects()
     {
         for(int i = 0; i < mapObjects.size(); i++) {
             Line2D shellBounds[] = getObjectBounds();
@@ -133,6 +167,8 @@ public class Shell extends RotatingObject {
                 {
                     rotateObject(0 - objectDirection + (mapObjectDirection * 2));
                 }
+
+                ricochet--;
             }
         }
     }
@@ -144,10 +180,12 @@ public class Shell extends RotatingObject {
 
     public void update()
     {
-        draw(levelContainer.getWindow());
         mapObjects = levelContainer.getMapObjects();
+        draw(levelContainer.getWindow());
         shotForward();
         handleMapObjects();
         checkOutOfBounds();
+        checkShellCollision();
+        checkRicochet();
     }
 }
