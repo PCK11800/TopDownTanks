@@ -3,6 +3,7 @@ package ObjectComponents;
 import UI.Screens.LevelContainer;
 import Window.Window;
 import org.jsfml.graphics.Color;
+import org.jsfml.system.Vector2f;
 
 public class MapObject extends RotatingObject{
 
@@ -13,7 +14,8 @@ public class MapObject extends RotatingObject{
     {
         this.window = levelContainer.getWindow();
         setLocation(x, y);
-        setSize(width, height);
+        Vector2f sizeVect = new Vector2f(width, height);
+        setSizeVector(sizeVect);
         setFillColor(Color.WHITE);
         setOutlineColor(Color.RED);
         setOutlineThickness(1);

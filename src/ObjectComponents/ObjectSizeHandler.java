@@ -6,6 +6,7 @@ public class ObjectSizeHandler {
 
     public static int defaultWidth = 1920;
     public static int defaultHeight = 1080;
+    public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     public static float[] scaleConstant()
     {

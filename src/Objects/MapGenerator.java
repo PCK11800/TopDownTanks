@@ -14,8 +14,8 @@ public class MapGenerator {
 
     private float wallThickness = 20;
     private float tileSize = 40;
-    private float screenWidth = ObjectSizeHandler.defaultWidth;
-    private float screenHeight = ObjectSizeHandler.defaultHeight;
+    private float screenWidth = ObjectSizeHandler.screenSize.width;
+    private float screenHeight = ObjectSizeHandler.screenSize.height;
     private MapObject top, bottom, left, right;
 
     public void settings(LevelContainer levelContainer)
@@ -54,6 +54,8 @@ public class MapGenerator {
         bottom = new MapObject(levelContainer, screenWidth / 2, screenHeight - wallThickness / 2, screenWidth, wallThickness, 0);
         left = new MapObject(levelContainer, wallThickness / 2, screenHeight / 2, screenHeight, wallThickness, 90);
         right = new MapObject(levelContainer, screenWidth - wallThickness / 2, screenHeight / 2, screenHeight, wallThickness, 90);
+
+        //mapObjects.add(top);
     }
 
     public ArrayList<MapObject> getMapObjects() { return mapObjects; }
