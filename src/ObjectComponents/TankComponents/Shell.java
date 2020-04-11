@@ -59,6 +59,17 @@ public class Shell extends RotatingObject {
         }
     }
 
+    private void checkInsideMapObject()
+    {
+        for(int i = 0; i < mapObjects.size(); i++)
+        {
+            if(mapObjects.get(i).contains(xPos, yPos))
+            {
+                isActive = false;
+            }
+        }
+    }
+
     private void checkShellCollision()
     {
         shells = levelContainer.getActiveShells();
@@ -172,5 +183,6 @@ public class Shell extends RotatingObject {
         checkOutOfBounds();
         checkShellCollision();
         checkRicochet();
+        checkInsideMapObject();
     }
 }

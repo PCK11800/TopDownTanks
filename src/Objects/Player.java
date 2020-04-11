@@ -10,7 +10,7 @@ public class Player {
     public Player()
     {
         tank = new Tank();
-        tank.setSize(65, 65);
+        tank.setSize(100, 100);
         //tank.setTankColor(Color.GREEN, Color.GREEN);
         //tank.setOutline();
         tank.setHullTexture(Textures.hull_default);
