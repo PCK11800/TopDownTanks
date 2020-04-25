@@ -5,6 +5,8 @@ import ObjectComponents.ObjectSizeHandler;
 import UI.Screens.LevelContainer;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,7 +19,9 @@ public class MapGenerator {
     private float tileSize = 10;
     private float screenWidth = ObjectSizeHandler.screenSize.width;
     private float screenHeight = ObjectSizeHandler.screenSize.height;
+    private float horizontalTileAmount, verticalTileAmount;
     private MapObject top, bottom, left, right;
+    private float minX, minY, maxX, maxY;
 
     public void settings(LevelContainer levelContainer)
     {
@@ -27,14 +31,16 @@ public class MapGenerator {
     public void genMap()
     {
         mapObjects.clear();
+
         setFourWalls();
-        generateTiles();
+        placeholder();
     }
 
-    private void generateTiles()
+    private void setMinMax()
     {
-        float horizontalTileAmount = screenWidth / tileSize;
-        float verticalTileAmount = screenHeight / tileSize;
+        setFourWalls();
+        horizontalTileAmount = screenWidth / tileSize;
+        verticalTileAmount = screenHeight / tileSize;
         System.out.println("Horizontal: " + horizontalTileAmount + ", Vertical: " + verticalTileAmount);
 
         for(int v = 0; v < verticalTileAmount + 1; v++)
@@ -48,40 +54,14 @@ public class MapGenerator {
                 }
             }
         }
-        float[] testTile = generateRandomWalls();
-        mapObjects.clear(); //Remove all mapObjects
-        MapObject testRandomGenTile = new MapObject(levelContainer, testTile[0], testTile[1], testTile[2], testTile[3], testTile[4]);
-        mapObjects.add(testRandomGenTile);
-    }
 
-    private float[] generateRandomWalls()
-    {
-        Random random = new Random();
+        minX = mapObjects.get(0).getxPos();
+        minY = mapObjects.get(0).getyPos();
+        maxX = mapObjects.get(mapObjects.size() - 1).getxPos();
+        maxY = mapObjects.get(mapObjects.size() - 1).getyPos();
 
-        float x, y, width, height, angle;
-        float[] wall = new float[5];
-
-        float minX = mapObjects.get(0).getxPos();
-        float minY = mapObjects.get(0).getyPos();
-        float maxX = mapObjects.get(mapObjects.size() - 1).getxPos();
-        float maxY = mapObjects.get(mapObjects.size() - 1).getyPos();
-
-        int rangeX = (int) (mapObjects.get(mapObjects.size() - 1).getxPos() - mapObjects.get(0).getxPos());
-        int rangeY = (int) (mapObjects.get(mapObjects.size() - 1).getyPos() - mapObjects.get(0).getyPos());
-
-        x = minX + random.nextInt(rangeX);
-        y = minY + random.nextInt(rangeY);
-        width = 25;
-        height = 25;
-        angle = 25;
-
-        wall[0] = x;
-        wall[1] = y;
-        wall[2] = width;
-        wall[3] = height;
-        wall[4] = angle;
-
-        return wall;
+        mapObjects.clear();
+        setFourWalls();
     }
 
     private void setFourWalls()
@@ -91,7 +71,56 @@ public class MapGenerator {
         left = new MapObject(levelContainer, wallThickness / 2, screenHeight / 2, screenHeight, wallThickness, 90);
         right = new MapObject(levelContainer, screenWidth - wallThickness / 2, screenHeight / 2, screenHeight, wallThickness, 90);
 
-        //mapObjects.add(top);
+        mapObjects.add(top);
+        mapObjects.add(bottom);
+        mapObjects.add(left);
+        mapObjects.add(right);
+    }
+
+    private void readMap(String fileName)
+    {
+        try{
+            BufferedReader mapReader = new BufferedReader(new FileReader(fileName));
+            int tile;
+            int tileNum = 1;
+            while((tile = mapReader.read()) != -1){
+                char character = (char) tile;
+                tile = Character.getNumericValue(character);
+                tileNum++;
+
+                if(tile == 1)
+                {
+                    addTile(tileNum);
+                }
+            }
+        } catch (Exception e)
+        {
+            System.out.println("Map not found!");
+        }
+    }
+
+    private void addTile(int tileNum)
+    {
+        float xVal = 0;
+        float yVal = 0;
+        int usedNum = tileNum;
+
+        while (usedNum >= horizontalTileAmount)
+        {
+            usedNum = (int) (usedNum - horizontalTileAmount);
+            yVal++;
+        }
+
+        xVal = usedNum - yVal;
+
+        MapObject tile = new MapObject(levelContainer, (xVal * tileSize) - (tileSize / 2), (yVal * tileSize) - (tileSize / 2), tileSize, tileSize, 0);
+        mapObjects.add(tile);
+    }
+
+    private void placeholder()
+    {
+        MapObject tile = new MapObject(levelContainer, screenWidth/2, screenHeight/2, 200, 200, 0);
+        mapObjects.add(tile);
     }
 
     public ArrayList<MapObject> getMapObjects() { return mapObjects; }

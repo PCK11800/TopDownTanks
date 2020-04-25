@@ -122,6 +122,11 @@ public class Tank {
         }
     }
 
+    public void move(String movement)
+    {
+        hull.move(movement);
+    }
+
     public void setTurningDistance(float turningDistance)
     {
         hull.setTurningDistance(turningDistance);

@@ -1,9 +1,11 @@
 package UI.Screens;
 
+import EnemyAI.AI;
 import ObjectComponents.MapObject;
 import ObjectComponents.TankComponents.Shell;
 import Objects.MapGenerator;
 import Objects.Player;
+import Objects.Tank;
 import Window.Window;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ public class LevelContainer {
 
     private Window window;
     private Player player;
+    private AI ai;
     private ArrayList<MapObject> mapObjects;
     private ArrayList<Shell> activeShells = new ArrayList<>();
     private MapGenerator mapGenerator = new MapGenerator();
@@ -19,12 +22,15 @@ public class LevelContainer {
     public void initialize(Window window)
     {
         this.window = window;
-        player = new Player();
-        player.setLevelContainer(this);
-
         mapGenerator.settings(this);
         mapGenerator.genMap();
         mapObjects = mapGenerator.getMapObjects();
+
+        player = new Player();
+        player.setLevelContainer(this);
+
+        ai = new AI();
+        ai.setLevelContainer(this);
     }
 
     public Window getWindow()
@@ -67,11 +73,13 @@ public class LevelContainer {
     {
         return mapObjects;
     }
+    public Player getPlayer() { return player; }
 
     public void update()
     {
         handleShells();
         handleMapObjects();
         player.update();
+        ai.update();
     }
 }

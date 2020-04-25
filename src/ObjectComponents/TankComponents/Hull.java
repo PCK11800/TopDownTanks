@@ -4,7 +4,6 @@ import ObjectComponents.MapObject;
 import ObjectComponents.RotatingObject;
 import Window.Window;
 
-import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 public class Hull extends RotatingObject {
@@ -63,13 +62,16 @@ public class Hull extends RotatingObject {
             ghost.rotateObject(objectDirection + turningDistance);
         }
 
-        for(int i = 0; i < mapObjects.size(); i++)
+        if(mapObjects != null)
         {
-            MapObject mapObject = mapObjects.get(i);
-
-            if(ghost.intersect(mapObject))
+            for(int i = 0; i < mapObjects.size(); i++)
             {
-                canMove = false;
+                MapObject mapObject = mapObjects.get(i);
+
+                if(ghost.intersect(mapObject))
+                {
+                    canMove = false;
+                }
             }
         }
 
