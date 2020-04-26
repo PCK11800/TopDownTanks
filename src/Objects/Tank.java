@@ -122,6 +122,11 @@ public class Tank {
         }
     }
 
+    public void rotateTurret(float turretDirection)
+    {
+        turret.rotateObject(turretDirection);
+    }
+
     public void move(String movement)
     {
         hull.move(movement);

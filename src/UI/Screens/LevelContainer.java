@@ -16,6 +16,7 @@ public class LevelContainer {
     private Player player;
     private AI ai;
     private ArrayList<MapObject> mapObjects;
+    private ArrayList<MapObject> pathTiles;
     private ArrayList<Shell> activeShells = new ArrayList<>();
     private MapGenerator mapGenerator = new MapGenerator();
 
@@ -25,6 +26,7 @@ public class LevelContainer {
         mapGenerator.settings(this);
         mapGenerator.genMap();
         mapObjects = mapGenerator.getMapObjects();
+        pathTiles = mapGenerator.getPathTiles();
 
         player = new Player();
         player.setLevelContainer(this);
@@ -66,6 +68,12 @@ public class LevelContainer {
         {
             MapObject mapObject = mapObjects.get(i);
             mapObject.update();
+        }
+
+        for(int i = 0; i < pathTiles.size(); i++)
+        {
+            MapObject pathTile = pathTiles.get(i);
+            pathTile.update();
         }
     }
 

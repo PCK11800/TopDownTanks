@@ -2,7 +2,9 @@ package Objects;
 
 import ObjectComponents.MapObject;
 import ObjectComponents.ObjectSizeHandler;
+import ObjectComponents.RotatingObject;
 import UI.Screens.LevelContainer;
+import org.jsfml.graphics.Color;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -14,6 +16,7 @@ public class MapGenerator {
 
     LevelContainer levelContainer;
     ArrayList<MapObject> mapObjects = new ArrayList<>();
+    ArrayList<MapObject> pathTiles = new ArrayList<>();
 
     private float wallThickness = 20;
     private float tileSize = 10;
@@ -31,12 +34,11 @@ public class MapGenerator {
     public void genMap()
     {
         mapObjects.clear();
-
-        setFourWalls();
         placeholder();
+        generateAvailableTiles();
     }
 
-    private void setMinMax()
+    private void generateAvailableTiles()
     {
         setFourWalls();
         horizontalTileAmount = screenWidth / tileSize;
@@ -47,10 +49,21 @@ public class MapGenerator {
         {
             for(int h = 0; h < horizontalTileAmount + 1; h++)
             {
-                MapObject tile = new MapObject(levelContainer, (h * tileSize) - (tileSize / 2), (v * tileSize) - (tileSize / 2), tileSize, tileSize, 0);
+                MapObject tile = new MapObject(levelContainer, (h * tileSize) - (tileSize / 2), (v * tileSize) - (tileSize / 2), tileSize, tileSize, 0, Color.GREEN, true);
                 if(!tile.intersect(top) && !tile.intersect(bottom) && !tile.intersect(left) && !tile.intersect(right))
                 {
-                    mapObjects.add(tile);
+                    boolean intersect = false;
+                    for(MapObject mapObject : mapObjects)
+                    {
+                        if(tile.intersect(mapObject) || mapObject.contains(tile.getxPos(), tile.getyPos()))
+                        {
+                            intersect = true;
+                        }
+                    }
+                    if(!intersect)
+                    {
+                        pathTiles.add(tile);
+                    }
                 }
             }
         }
@@ -59,17 +72,14 @@ public class MapGenerator {
         minY = mapObjects.get(0).getyPos();
         maxX = mapObjects.get(mapObjects.size() - 1).getxPos();
         maxY = mapObjects.get(mapObjects.size() - 1).getyPos();
-
-        mapObjects.clear();
-        setFourWalls();
     }
 
     private void setFourWalls()
     {
-        top = new MapObject(levelContainer, screenWidth / 2, wallThickness / 2, screenWidth, wallThickness, 0);
-        bottom = new MapObject(levelContainer, screenWidth / 2, screenHeight - wallThickness / 2, screenWidth, wallThickness, 0);
-        left = new MapObject(levelContainer, wallThickness / 2, screenHeight / 2, screenHeight, wallThickness, 90);
-        right = new MapObject(levelContainer, screenWidth - wallThickness / 2, screenHeight / 2, screenHeight, wallThickness, 90);
+        top = new MapObject(levelContainer, screenWidth / 2, wallThickness / 2, screenWidth, wallThickness, 0, Color.WHITE, false);
+        bottom = new MapObject(levelContainer, screenWidth / 2, screenHeight - wallThickness / 2, screenWidth, wallThickness, 0,  Color.WHITE, false);
+        left = new MapObject(levelContainer, wallThickness / 2, screenHeight / 2, screenHeight, wallThickness, 90,  Color.WHITE, false);
+        right = new MapObject(levelContainer, screenWidth - wallThickness / 2, screenHeight / 2, screenHeight, wallThickness, 90,  Color.WHITE, false);
 
         mapObjects.add(top);
         mapObjects.add(bottom);
@@ -77,51 +87,13 @@ public class MapGenerator {
         mapObjects.add(right);
     }
 
-    private void readMap(String fileName)
-    {
-        try{
-            BufferedReader mapReader = new BufferedReader(new FileReader(fileName));
-            int tile;
-            int tileNum = 1;
-            while((tile = mapReader.read()) != -1){
-                char character = (char) tile;
-                tile = Character.getNumericValue(character);
-                tileNum++;
-
-                if(tile == 1)
-                {
-                    addTile(tileNum);
-                }
-            }
-        } catch (Exception e)
-        {
-            System.out.println("Map not found!");
-        }
-    }
-
-    private void addTile(int tileNum)
-    {
-        float xVal = 0;
-        float yVal = 0;
-        int usedNum = tileNum;
-
-        while (usedNum >= horizontalTileAmount)
-        {
-            usedNum = (int) (usedNum - horizontalTileAmount);
-            yVal++;
-        }
-
-        xVal = usedNum - yVal;
-
-        MapObject tile = new MapObject(levelContainer, (xVal * tileSize) - (tileSize / 2), (yVal * tileSize) - (tileSize / 2), tileSize, tileSize, 0);
-        mapObjects.add(tile);
-    }
 
     private void placeholder()
     {
-        MapObject tile = new MapObject(levelContainer, screenWidth/2, screenHeight/2, 200, 200, 0);
+        MapObject tile = new MapObject(levelContainer, screenWidth/2, screenHeight/2, 200, 200, 0,  Color.WHITE, false);
         mapObjects.add(tile);
     }
 
     public ArrayList<MapObject> getMapObjects() { return mapObjects; }
+    public ArrayList<MapObject> getPathTiles() { return pathTiles; }
 }

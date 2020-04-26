@@ -6,6 +6,7 @@ public class LogicEngine {
 
     private Tank player;
     private Tank ai;
+    private int i = 0;
 
     public LogicEngine(Tank player, Tank ai)
     {
@@ -15,7 +16,9 @@ public class LogicEngine {
 
     public void moveTest()
     {
+        ai.rotateTurret(i);
         ai.move("backward");
+        i++;
     }
 
     public void update()
