@@ -2,6 +2,7 @@ package UI.Screens;
 
 import EnemyAI.AI;
 import ObjectComponents.MapObject;
+import ObjectComponents.PathTile;
 import ObjectComponents.TankComponents.Shell;
 import Objects.MapGenerator;
 import Objects.Player;
@@ -16,7 +17,7 @@ public class LevelContainer {
     private Player player;
     private AI ai;
     private ArrayList<MapObject> mapObjects;
-    private ArrayList<MapObject> pathTiles;
+    private ArrayList<PathTile> pathTiles;
     private ArrayList<Shell> activeShells = new ArrayList<>();
     private MapGenerator mapGenerator = new MapGenerator();
 
@@ -72,7 +73,7 @@ public class LevelContainer {
 
         for(int i = 0; i < pathTiles.size(); i++)
         {
-            MapObject pathTile = pathTiles.get(i);
+            PathTile pathTile = pathTiles.get(i);
             pathTile.update();
         }
     }

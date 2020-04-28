@@ -1,7 +1,9 @@
 package Objects;
 
+import EnemyAI.AStarSearch;
 import ObjectComponents.MapObject;
 import ObjectComponents.ObjectSizeHandler;
+import ObjectComponents.PathTile;
 import ObjectComponents.RotatingObject;
 import UI.Screens.LevelContainer;
 import org.jsfml.graphics.Color;
@@ -10,13 +12,14 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MapGenerator {
 
     LevelContainer levelContainer;
     ArrayList<MapObject> mapObjects = new ArrayList<>();
-    ArrayList<MapObject> pathTiles = new ArrayList<>();
+    ArrayList<PathTile> pathTiles = new ArrayList<>();
 
     private float wallThickness = 20;
     private float tileSize = 10;
@@ -36,6 +39,8 @@ public class MapGenerator {
         mapObjects.clear();
         placeholder();
         generateAvailableTiles();
+        generatePathTileNeighbors();
+        searchTest();
     }
 
     private void generateAvailableTiles()
@@ -49,7 +54,7 @@ public class MapGenerator {
         {
             for(int h = 0; h < horizontalTileAmount + 1; h++)
             {
-                MapObject tile = new MapObject(levelContainer, (h * tileSize) - (tileSize / 2), (v * tileSize) - (tileSize / 2), tileSize, tileSize, 0, Color.GREEN, true);
+                PathTile tile = new PathTile(levelContainer, (h * tileSize) - (tileSize / 2), (v * tileSize) - (tileSize / 2), tileSize, tileSize);
                 if(!tile.intersect(top) && !tile.intersect(bottom) && !tile.intersect(left) && !tile.intersect(right))
                 {
                     boolean intersect = false;
@@ -63,6 +68,7 @@ public class MapGenerator {
                     if(!intersect)
                     {
                         pathTiles.add(tile);
+
                     }
                 }
             }
@@ -94,6 +100,36 @@ public class MapGenerator {
         mapObjects.add(tile);
     }
 
+    private void generatePathTileNeighbors()
+    {
+        for(int i = 0; i < pathTiles.size(); i++)
+        {
+            PathTile thisTile = pathTiles.get(i);
+
+            for(int j = 0; j < pathTiles.size(); j++)
+            {
+                PathTile otherTile = pathTiles.get(j);
+                if(!thisTile.uniqueID.equals(otherTile.uniqueID)){
+                    if(thisTile.intersect(otherTile)){
+                        thisTile.addNeighbor(otherTile);
+                        System.out.println(thisTile.uniqueID);
+                    }
+                }
+            }
+        }
+    }
+
+    private void searchTest()
+    {
+        AStarSearch searchEngine = new AStarSearch();
+        List path = searchEngine.findPath(pathTiles.get(0), pathTiles.get(pathTiles.size() - 1));
+        for(int i = 0; i < path.size(); i++)
+        {
+            PathTile tile = (PathTile) path.get(i);
+            tile.setFillColor(Color.RED);
+        }
+    }
+
     public ArrayList<MapObject> getMapObjects() { return mapObjects; }
-    public ArrayList<MapObject> getPathTiles() { return pathTiles; }
+    public ArrayList<PathTile> getPathTiles() { return pathTiles; }
 }
