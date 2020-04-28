@@ -91,6 +91,11 @@ public class Tank {
         this.rateOfFire = rateOfFire;
     }
 
+    public void setHullDirection(float direction)
+    {
+        hull.rotateObject(direction);
+    }
+
     private Shell createShell()
     {
         Shell shell = new Shell(levelContainer, turret, shellSpeed, 2);
@@ -146,6 +151,12 @@ public class Tank {
     {
         isPlayerControlled = true;
     }
+
+    public float getxPos() { return xPos; }
+
+    public float getyPos() { return yPos; }
+
+    public float getHullDirection() { return hull.getObjectDirection(); }
 
     public void update()
     {

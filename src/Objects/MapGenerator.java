@@ -39,8 +39,8 @@ public class MapGenerator {
         mapObjects.clear();
         placeholder();
         generateAvailableTiles();
-        generatePathTileNeighbors();
-        searchTest();
+        //generatePathTileNeighbors();
+        //searchTest();
     }
 
     private void generateAvailableTiles()

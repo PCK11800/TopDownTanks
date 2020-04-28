@@ -28,7 +28,7 @@ public class AI {
     public void setLevelContainer(LevelContainer levelContainer)
     {
         tank.setLevelContainer(levelContainer);
-        logic = new LogicEngine(levelContainer.getPlayer().getTank(), tank);
+        logic = new LogicEngine(levelContainer.getPlayer().getTank(), tank, levelContainer.getPathTiles());
     }
 
     public void update()

@@ -82,6 +82,7 @@ public class LevelContainer {
     {
         return mapObjects;
     }
+    public ArrayList<PathTile> getPathTiles() { return pathTiles; }
     public Player getPlayer() { return player; }
 
     public void update()
