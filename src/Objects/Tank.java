@@ -152,9 +152,9 @@ public class Tank {
         isPlayerControlled = true;
     }
 
-    public float getxPos() { return xPos; }
+    public float getxPos() { return hull.getxPos(); }
 
-    public float getyPos() { return yPos; }
+    public float getyPos() { return hull.getyPos(); }
 
     public float getHullDirection() { return hull.getObjectDirection(); }
 

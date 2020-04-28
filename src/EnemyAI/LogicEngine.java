@@ -12,6 +12,7 @@ public class LogicEngine {
     private Tank ai;
     private ArrayList<PathTile> pathTiles;
     private int i = 0;
+    private boolean doneMoving, doneTurning = false;
 
     public LogicEngine(Tank player, Tank ai, ArrayList<PathTile> pathTiles)
     {
@@ -46,31 +47,34 @@ public class LogicEngine {
         }
 
 
-        //Turn
-        if(!((ai.getHullDirection() >= direction - 1) && (ai.getHullDirection() <= direction + 1)))
-        {
-            ai.move("left");
-        }
-        else{
-            ai.setHullDirection(direction);
-
-            if(current_xPos != target_xPos && current_yPos != target_yPos){
-                ai.move("forward");
+        if(!doneTurning){
+            if(!((ai.getHullDirection() >= direction - 1) && (ai.getHullDirection() <= direction + 1)))
+            {
+                ai.move("left");
+                System.out.println("Turnin");
+            }
+            else{
+                ai.setHullDirection(direction);
+                doneTurning = true;
             }
         }
 
-
-
-        System.out.println(direction + ", " + ai.getHullDirection());
-        System.out.println(current_xPos + ", " + current_yPos);
-        System.out.println(target_xPos + ", " + target_yPos);
+        if(doneTurning)
+        {
+            if(!targetTile.contains(current_xPos, current_yPos)){
+                ai.move("forward");
+                System.out.println("Movin");
+            }
+            else{
+                ai.setLocation(target_xPos, target_yPos);
+                doneMoving = true;
+            }
+        }
     }
 
     public void update()
     {
         //moveTest();
-        moveToTile(pathTiles.get(10));
-        pathTiles.get(10).setFillColor(Color.RED);
         ai.update();
     }
 }
