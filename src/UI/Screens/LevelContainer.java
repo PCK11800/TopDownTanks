@@ -89,7 +89,7 @@ public class LevelContainer {
     {
         handleShells();
         handleMapObjects();
-        player.update();
-        ai.update();
+        //player.update();
+        //ai.update();
     }
 }
