@@ -19,6 +19,7 @@ public class PathTile extends RotatingObject{
     public PathTile pathParent;
     public ArrayList<PathTile> neighbors = new ArrayList<>();
     public String uniqueID;
+    public boolean valid = true;
 
     public PathTile(LevelContainer levelContainer, float x, float y, float width, float height)
     {

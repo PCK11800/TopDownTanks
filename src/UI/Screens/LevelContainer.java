@@ -65,16 +65,16 @@ public class LevelContainer {
 
     private void handleMapObjects()
     {
-        for(int i = 0; i < mapObjects.size(); i++)
-        {
-            MapObject mapObject = mapObjects.get(i);
-            mapObject.update();
-        }
-
         for(int i = 0; i < pathTiles.size(); i++)
         {
             PathTile pathTile = pathTiles.get(i);
             pathTile.update();
+        }
+
+        for(int i = 0; i < mapObjects.size(); i++)
+        {
+            MapObject mapObject = mapObjects.get(i);
+            mapObject.update();
         }
     }
 
@@ -89,6 +89,7 @@ public class LevelContainer {
     {
         handleShells();
         handleMapObjects();
+        //mapGenerator.control();
         //player.update();
         //ai.update();
     }

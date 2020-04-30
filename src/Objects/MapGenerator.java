@@ -7,6 +7,8 @@ import ObjectComponents.PathTile;
 import ObjectComponents.RotatingObject;
 import UI.Screens.LevelContainer;
 import org.jsfml.graphics.Color;
+import org.jsfml.system.Clock;
+import org.jsfml.window.Keyboard;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -25,9 +27,12 @@ public class MapGenerator {
     private float tileSize = 10;
     private float screenWidth = ObjectSizeHandler.screenSize.width;
     private float screenHeight = ObjectSizeHandler.screenSize.height;
-    private float horizontalTileAmount, verticalTileAmount;
     private MapObject top, bottom, left, right;
     private float minX, minY, maxX, maxY;
+    private int horizontalTileNum, verticalTileNum;
+
+    int r = 0;
+    int c = 0;
 
     public void settings(LevelContainer levelContainer)
     {
@@ -39,6 +44,7 @@ public class MapGenerator {
         mapObjects.clear();
         placeholder();
         generateAvailableTiles();
+        calculateRowColumnNumber();
         generatePathTileNeighbors();
         searchTest();
     }
@@ -46,29 +52,24 @@ public class MapGenerator {
     private void generateAvailableTiles()
     {
         setFourWalls();
-        horizontalTileAmount = screenWidth / tileSize;
-        verticalTileAmount = screenHeight / tileSize;
-        System.out.println("Horizontal: " + horizontalTileAmount + ", Vertical: " + verticalTileAmount);
+        float maxHorizontalTileAmount = screenWidth / tileSize;
+        float maxVerticalTileAmount = screenHeight / tileSize;
+        System.out.println("Horizontal: " + maxHorizontalTileAmount + ", Vertical: " + maxVerticalTileAmount);
 
-        for(int v = 0; v < verticalTileAmount + 1; v++)
+        for(int v = 0; v < maxVerticalTileAmount + 1; v++)
         {
-            for(int h = 0; h < horizontalTileAmount + 1; h++)
+            for(int h = 0; h < maxHorizontalTileAmount + 1; h++)
             {
                 PathTile tile = new PathTile(levelContainer, (h * tileSize) - (tileSize / 2), (v * tileSize) - (tileSize / 2), tileSize, tileSize);
                 if(!tile.intersect(top) && !tile.intersect(bottom) && !tile.intersect(left) && !tile.intersect(right))
                 {
-                    boolean intersect = false;
                     for(MapObject mapObject : mapObjects)
                     {
                         if(tile.intersect(mapObject) || mapObject.contains(tile.getxPos(), tile.getyPos()))
                         {
-                            intersect = true;
                         }
                     }
-                    if(!intersect)
-                    {
-                        pathTiles.add(tile);
-                    }
+                    pathTiles.add(tile);
                 }
             }
         }
@@ -95,37 +96,135 @@ public class MapGenerator {
 
     private void placeholder()
     {
-        MapObject tile = new MapObject(levelContainer, screenWidth/2, screenHeight/2, 200, 200, 0,  Color.WHITE, false);
-        mapObjects.add(tile);
+        //MapObject tile = new MapObject(levelContainer, screenWidth/2, screenHeight/2, 200, 200, 0,  Color.WHITE, false);
+        //mapObjects.add(tile);
     }
 
     private void generatePathTileNeighbors()
     {
-        for(int i = 0; i < pathTiles.size(); i++)
+        for(int r = 0; r < verticalTileNum; r++)
         {
-            PathTile thisTile = pathTiles.get(i);
-
-            for(int j = 0; j < pathTiles.size(); j++)
+            for(int c = 0; c < horizontalTileNum; c++)
             {
-                PathTile otherTile = pathTiles.get(j);
-                if(!thisTile.uniqueID.equals(otherTile.uniqueID)){
-                    if(thisTile.intersect(otherTile)){
-                        thisTile.addNeighbor(otherTile);
-                        System.out.println(thisTile.uniqueID);
-                    }
+                PathTile thisTile = tileAt(r, c);
+                //Has North
+                if(r > 0){
+                    thisTile.addNeighbor(tileAt(r-1, c));
+                }
+                //Has South
+                if(r < verticalTileNum - 1){
+                    thisTile.addNeighbor(tileAt(r+1, c));
+                }
+                //Has West
+                if(c > 0){
+                    thisTile.addNeighbor(tileAt(r, c-1));
+                }
+                //Has East
+                if(c < horizontalTileNum - 1){
+                    thisTile.addNeighbor(tileAt(r, c+1));
+                }
+                //Has North West
+                if(r > 0 && c > 0) {
+                    thisTile.addNeighbor(tileAt(r-1, c-1));
+                }
+                //Has North East
+                if(r > 0 && c < horizontalTileNum - 1){
+                    thisTile.addNeighbor(tileAt(r-1, c+1));
+                }
+                //Has South West
+                if(r < verticalTileNum - 1 && c > 0){
+                    thisTile.addNeighbor(tileAt(r+1, c-1));
+                }
+                //Has South East
+                if(r < verticalTileNum - 1 && c < horizontalTileNum - 1){
+                    thisTile.addNeighbor(tileAt(r+1, c+1));
                 }
             }
         }
+    }
+
+    private PathTile tileAt(int r, int c)
+    {
+        return pathTiles.get(r * horizontalTileNum + c);
+    }
+
+    private void calculateRowColumnNumber()
+    {
+        int horizontalTileNum = 0;
+        int verticalTileNum = 0;
+
+        PathTile firstTile = pathTiles.get(0);
+        float firstTileYPos = firstTile.getyPos();
+        boolean nextRow = false;
+
+        while(!nextRow){
+            PathTile nextTile = pathTiles.get(horizontalTileNum);
+            if(nextTile.getyPos() == firstTileYPos){
+                horizontalTileNum++;
+            }
+            else{
+                nextRow = true;
+            }
+        }
+
+        verticalTileNum = pathTiles.size() / horizontalTileNum;
+
+        this.horizontalTileNum = horizontalTileNum;
+        this.verticalTileNum = verticalTileNum;
+
+        System.out.println("Horizontal and Vertical tile amount: " + this.horizontalTileNum + ", " + this.verticalTileNum);
     }
 
     private void searchTest()
     {
         AStarSearch searchEngine = new AStarSearch();
         List path = searchEngine.findPath(pathTiles.get(0), pathTiles.get(pathTiles.size() - 1));
+
+
         for(int i = 0; i < path.size(); i++)
         {
             PathTile tile = (PathTile) path.get(i);
             tile.setFillColor(Color.RED);
+        }
+    }
+
+
+    Clock controlClock = new Clock();
+    public void control()
+    {
+        if(controlClock.getElapsedTime().asMilliseconds() >= 100){
+            if(Keyboard.isKeyPressed(Keyboard.Key.W)) {
+                r--;
+                System.out.println(r + ", " + c);
+                controlClock.restart();
+            }
+            if(Keyboard.isKeyPressed(Keyboard.Key.A)) {
+                c--;
+                System.out.println(r + ", " + c);
+                controlClock.restart();
+            }
+            if(Keyboard.isKeyPressed(Keyboard.Key.S)) {
+                r++;
+                System.out.println(r + ", " + c);
+                controlClock.restart();
+            }
+            if(Keyboard.isKeyPressed(Keyboard.Key.D)) {
+                c++;
+                System.out.println(r + ", " + c);
+                controlClock.restart();
+            }
+
+            for(PathTile tile : pathTiles){
+                tile.setFillColor(Color.GREEN);
+            }
+        }
+        if(r < verticalTileNum && r > -1){
+            if(c < horizontalTileNum && c > -1){
+                tileAt(r, c).setFillColor(Color.RED);
+                for(PathTile neighbor : tileAt(r, c).getNeighbors()){
+                    neighbor.setFillColor(Color.YELLOW);
+                }
+            }
         }
     }
 
